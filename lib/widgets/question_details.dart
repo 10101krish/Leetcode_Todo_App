@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leetcode_todo_app/models/confidence.dart';
 import 'package:leetcode_todo_app/models/question.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QuestionDetails extends StatelessWidget {
   const QuestionDetails({
@@ -43,6 +44,23 @@ class QuestionDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
+                'Question URL',
+                style: headingTextStyle(),
+              ),
+              const SizedBox(height: 10),
+              InkWell(
+                onTap: () => launchUrl(Uri.parse(
+                  question.url,
+                )),
+                child: Text(
+                  question.url,
+                  style: informationTextStyle().copyWith(
+                    color: Colors.indigo.shade900,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
                 'Question Description',
                 style: headingTextStyle(),
               ),
@@ -73,7 +91,7 @@ class QuestionDetails extends StatelessWidget {
               Text(
                 formatConfidenceText(question.confidence.name),
                 style: informationTextStyle().copyWith(
-                  color: confidenceColor(question.confidence),
+                  color: confidenceColor[question.confidence],
                   fontWeight: FontWeight.w500,
                 ),
               ),

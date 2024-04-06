@@ -31,37 +31,36 @@ class QuestionBig extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: ListTile(
-        tileColor: Colors.grey.shade100,
-        splashColor: difficultyColor[question.difficulty]!.withOpacity(0.75),
-        selectedColor: difficultyColor[question.difficulty]!.withOpacity(0.25),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        onTap: () => expandQuestion(context),
-        leading: Container(
-          width: 30,
-          height: 30,
-          alignment: Alignment.center,
-          child: Text(
-            (index + 1).toString(),
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+    return ListTile(
+      tileColor: Colors.grey.shade100,
+      splashColor: difficultyColor[question.difficulty]!.withOpacity(0.75),
+      selectedColor: difficultyColor[question.difficulty]!.withOpacity(0.25),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      onTap: () => expandQuestion(context),
+      leading: Container(
+        width: 30,
+        height: 30,
+        alignment: Alignment.center,
+        child: Text(
+          (index + 1).toString(),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        title: Text(question.title),
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
-          fontSize: 17.5,
-          fontWeight: FontWeight.w500,
-          overflow: TextOverflow.fade,
-        ),
-        subtitle: Text(question.difficulty),
-        subtitleTextStyle: TextStyle(
-          color: difficultyColor[question.difficulty],
-        ),
+      ),
+      title: Text(question.title),
+      titleTextStyle: const TextStyle(
+        color: Colors.black,
+        fontSize: 17.5,
+        fontWeight: FontWeight.w500,
+        overflow: TextOverflow.fade,
+      ),
+      subtitle: Text(question.difficulty),
+      subtitleTextStyle: TextStyle(
+        color: difficultyColor[question.difficulty],
       ),
     );
   }

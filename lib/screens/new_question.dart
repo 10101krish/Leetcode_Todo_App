@@ -62,6 +62,7 @@ class _NewQuestionScreenState extends State<NewQuestionScreen> {
   void saveItem() async {
     final Question question = Question(
       id: uuid.v4(),
+      url: _enteredURL,
       title: _enteredQuestionTitle,
       description: _enteredDescription,
       difficulty: _enteredDifficulty,
@@ -140,7 +141,7 @@ class _NewQuestionScreenState extends State<NewQuestionScreen> {
                         child: Text(
                           formatConfidenceLevelName(confidence.name),
                           style: TextStyle(
-                            color: confidenceColor(confidence),
+                            color: confidenceColor[confidence],
                           ),
                         ),
                       ),

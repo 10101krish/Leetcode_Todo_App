@@ -4,6 +4,7 @@ import 'package:leetcode_todo_app/models/confidence.dart';
 class Question {
   const Question({
     required this.id,
+    required this.url,
     required this.title,
     required this.description,
     required this.difficulty,
@@ -11,6 +12,7 @@ class Question {
   });
 
   final String id;
+  final String url;
   final String title;
   final String description;
   final String difficulty;

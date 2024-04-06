@@ -7,6 +7,7 @@ import 'package:path/path.dart' as path;
 void _createDb(Database db, int newVersion) async {
   await db.execute('''CREATE TABLE questions (
         id TEXT PRIMARY KEY UNIQUE, 
+        url TEXT UNIQUE, 
         title TEXT UNIQUE, 
         description TEXT, 
         difficulty TEXT);''');
@@ -32,6 +33,41 @@ Future<Database> _getQuestionsDatabase() async {
   return db;
 }
 
+void updateConfidence({
+  required Question question,
+  required ConfidenceLevel newConfidenceLevel,
+}) async {
+  final sql.Database db = await _getQuestionsDatabase();
+  if (newConfidenceLevel == ConfidenceLevel.expierienced) {
+    await db.execute("""DELETE FROM duedate WHERE id = ?""", [
+      question.id,
+    ]);
+    await db.execute("""DELETE FROM confidence WHERE id = ?""", [
+      question.id,
+    ]);
+    await db.execute("""DELETE FROM questions WHERE id = ?""", [
+      question.id,
+    ]);
+  } else {
+    await db.execute("""UPDATE confidence
+      SET confidence = ?
+      WHERE id = ?""", [
+      newConfidenceLevel.name,
+      question.id,
+    ]);
+    final dueDate = DateTime.now()
+        .add(Duration(days: dueDelay[newConfidenceLevel]!))
+        .toIso8601String()
+        .substring(0, 10);
+    await db.execute("""UPDATE duedate
+      SET due = ?
+      WHERE id = ?""", [
+      dueDate,
+      question.id,
+    ]);
+  }
+}
+
 void addNewQuestion({
   required Question question,
 }) async {
@@ -39,11 +75,11 @@ void addNewQuestion({
       .add(Duration(days: -1 * dueDelay[question.confidence]!))
       .toIso8601String()
       .substring(0, 10);
-  // print(dueDate);
   final sql.Database db = await _getQuestionsDatabase();
 
   db.insert('questions', {
     'id': question.id,
+    'url': question.url,
     'title': question.title,
     'description': question.description,
     'difficulty': question.difficulty,
@@ -71,6 +107,7 @@ Future<List<Question>> loadDueQuestions() async {
   final questions = data.map((row) {
     return Question(
       id: row['id'] as String,
+      url: row['url'] as String,
       title: row['title'] as String,
       description: row['description'] as String,
       difficulty: row['difficulty'] as String,
