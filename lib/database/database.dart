@@ -72,7 +72,7 @@ void addNewQuestion({
   required Question question,
 }) async {
   final dueDate = DateTime.now()
-      .add(Duration(days: -1 * dueDelay[question.confidence]!))
+      .add(Duration(days: dueDelay[question.confidence]!))
       .toIso8601String()
       .substring(0, 10);
   final sql.Database db = await _getQuestionsDatabase();
